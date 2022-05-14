@@ -4,8 +4,7 @@ from models import User
 from flask_login import login_user, logout_user, login_required, current_user
 from __init__ import db
 import hashlib
-from difflib import Differ
-from pprint import pprint
+from email.message import EmailMessage
 
 
 # create a Blueprint object that we name 'auth'
@@ -93,25 +92,20 @@ def generateOTP(userEmail):
     s.starttls()
     s.login("aguasfelipe02@gmail.com", "wxoalscknmrddeeo")
 
-    desde = "ECI-login"
-    hacia = "Para: <{}>".format(userEmail)
-    asunto = "Codigo OTP enviado desde Python"
-    mensaje = """Hola!<br/> <br/> 
-    Te enviamos un codigo de unico uso para que puedas iniciar sesion en ECI-Login <br/><br/>
+    mensaje = """
+    Hola!
+    Te enviamos un codigo de unico uso para que puedas iniciar sesion en ECI-Login
 
-    <b>Codigo:</b> {} <br/><br/>
+    Codigo: {}
 
-    Enviado desde <b>Python</b> 
+    Enviado desde ECILogin
     """.format(OTP)
 
-    email = """From: %s 
-    To: %s 
-    MIME-Version: 1.0 
-    Content-type: text/html 
-    Subject: %s 
+    msg = EmailMessage()
+    msg['Subject'] = 'EciLogin OTP'
+    msg['From'] = 'EciLogin'
+    msg['To'] = userEmail
+    msg.set_content(mensaje)
 
-    %s
-    """ % (desde, hacia, asunto, mensaje)
-
-    s.sendmail('&&&&&&&&&&&', userEmail, email)
+    s.sendmail("EciLogin", userEmail, msg.as_bytes())
     return hashlib.sha256(OTP.encode('utf-8')).hexdigest()
