@@ -90,7 +90,7 @@ def generateOTP(userEmail):
 
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
-    s.login("aguasfelipe02@gmail.com", "wxoalscknmrddeeo")
+    s.login("noreplyecilogin@gmail.com", "ahxvdosdvesqtcav")
 
     mensaje = """
     Hola!
